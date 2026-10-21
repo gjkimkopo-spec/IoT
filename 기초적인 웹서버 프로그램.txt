@@ -1,0 +1,34 @@
+#include <ESP8266WiFi.h>
+#include <ESP8266WebServer.h>
+
+//SoftAP
+const char* ssid="김군진";
+const char* password="12341234";
+
+ESP8266WebServer server(80);//1. 서버 객체(인스턴스) 생성
+
+void setup() {
+ Serial.begin(9600);
+ WiFi.softAP(ssid,password);
+ Serial.println();
+ Serial.print("AP IP Address");
+ Serial.println(WiFi.softAPIP());
+
+ server.on("/",handleRoot);//2. 핸들러 등록
+ server.begin();//3.웹 서버 시작
+
+}
+
+void loop() {
+  server.handleClient();//4. 주기적인 웹 서버 기능 수행
+}
+
+const char MAIN_page[] PROGMEM = R"rawliteral(
+// 이곳에 여러분이 작성한 html 코드를 직접 넣습니다.
+
+)rawliteral";
+
+void handleRoot()
+{
+  server.send(200,"text/html",MAIN_page);
+}
