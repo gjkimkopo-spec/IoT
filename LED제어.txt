@@ -1,0 +1,141 @@
+#include <ESP8266WiFi.h>
+#include <ESP8266WebServer.h>
+#include <TM1638.h>
+
+TM1638 aaa(D2,D1,D0);
+
+//SoftAP
+const char* ssid="김군진";
+const char* password="12341234";
+
+ESP8266WebServer server(80);//1. 서버 객체(인스턴스) 생성
+
+void setup() {
+ Serial.begin(9600);
+ WiFi.softAP(ssid,password);
+ Serial.println();
+ Serial.print("AP IP Address");
+ Serial.println(WiFi.softAPIP());
+
+ server.on("/",handleRoot);//2. 핸들러 등록
+ server.begin();//3.웹 서버 시작
+
+}
+
+void loop() {
+  server.handleClient();//4. 주기적인 웹 서버 기능 수행
+}
+
+const char MAIN_page[] PROGMEM = R"rawliteral(
+// 이곳에 여러분이 작성한 html 코드를 직접 넣습니다.
+
+<html>
+	<head>
+    <meta charset='utf8'>
+		<style>
+			body{
+				background-color:pink;
+			}
+			#div1{
+				height:10%;
+				background-color:red;
+				font-size:3em;
+				color:white;
+				display:flex;
+				justify-content:center;
+				align-items:center;
+			}
+			#div2{
+				height:75%;
+				background-color:yellow;
+				
+				
+				text-align:center;
+			}
+			#div3{
+				height:5%;
+				background-color:blue;
+				font-size:2em;
+				color:white;
+				display:flex;
+				justify-content:center;
+				align-items:center;
+			}
+			#div4{
+				height:5%;
+				background-color:blue;
+				font-size:2em;
+				color:white;
+				display:flex;
+				justify-content:center;
+				align-items:center;
+			}
+			#div5{
+				height:5%;
+				background-color:blue;
+				font-size:2em;
+				color:white;
+				display:flex;
+				justify-content:center;
+				align-items:center;
+			}
+			#led1{
+				width:30%;
+				height:30%;
+				accent-color:red;
+			}
+			#btn1{
+				width:20%;
+				height:15%;
+				font-size:3em;
+				color:red;
+				background-color:pink;
+			}
+		</style>
+		<script>
+			function turn_on()
+			{
+				document.getElementById('led1').checked = true;
+        fetch('/?LED='+ true, {method:'GET'});
+			}
+
+			function turn_off()
+			{
+				document.getElementById('led1').checked = false;
+        fetch('/?LED='+ false, {method:'GET'});
+			}
+		</script>
+	</head>
+	<body>
+		<div id= 'div1' > 램프제어기</div>
+		<div id= 'div2' >
+			<br><br><br><br><br><br>
+			<input type='radio' id='led1'> <br>
+			<br><br>
+			<button id='btn1' onclick='turn_on();' > ON </button>
+			<button id='btn1' onclick='turn_off();'> OFF </button>
+
+                                    </div>
+
+		<div id= 'div3' > 한국폴리텍대학</div>
+		<div id= 'div4' >메카트로닉스과</div>
+		<div id= 'div5' >김 군 진</div>
+	</body>
+
+</html>
+
+)rawliteral";
+
+void handleRoot()
+{
+  if(server.hasArg("LED")){
+    String led=server.arg("LED");
+    if(led="true"){
+      aaa.setLEDs(0xff);
+    }
+    else{
+      aaa.setLEDs(0x00);
+    }
+  }
+  server.send(200,"text/html",MAIN_page);
+}
