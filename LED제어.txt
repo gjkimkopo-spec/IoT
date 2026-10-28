@@ -130,7 +130,7 @@ void handleRoot()
 {
   if(server.hasArg("LED")){
     String led=server.arg("LED");
-    if(led="true"){
+    if(led=="true"){
       aaa.setLEDs(0xff);
     }
     else{
