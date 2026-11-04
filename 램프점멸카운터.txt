@@ -1,0 +1,129 @@
+<html>
+<head>
+    <style>
+        body {
+            background-color: pink;
+        }
+
+        #div1 {
+            height: 10%;
+            background-color: lightblue;
+            font-size: 3em;
+            color: blue;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #div2 {
+            height: 80%;
+            background-color: lightgreen;
+            text-align: center;
+        }
+
+        #div3 {
+            height: 10%;
+            background-color: lightblue;
+            font-size: 3em;
+            color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #lamp1 {
+            height: 30%;
+            width: 30%;
+            accent-color: red;
+        }
+
+        #txt1 {
+            width: 30%;
+            font-size: 4em;
+            text-align: center;
+        }
+
+        #btn1 {
+            font-size: 3em;
+            width: 20%;
+            color: red;
+            background-color: yellow;
+        }
+    </style>
+
+    <script>
+        setInterval(timer1, 50);
+
+        let step = 0;
+        let counter = 0;
+
+        function timer1() {
+            switch (step) {
+
+                case 100:
+                    step = 1;
+                    break;
+
+                case 1:
+                    document.getElementById('lamp1').checked = true;
+                    counter++;
+                    document.getElementById('txt1').value = counter;
+                    step = 2;
+                    break;
+
+                case 2:
+                    document.getElementById('lamp1').checked = false;
+                    step = 1;
+                    break;
+
+                case 200:
+                    break;
+
+                case 300:
+                    counter = 0;
+                    document.getElementById('txt1').value = counter;
+                    document.getElementById('lamp1').checked = false;
+	            counter = 0;
+                    break;
+            }
+        }
+
+        function start() {
+            step = 100;
+        }
+
+        function stop() {
+            step = 200;
+        }
+
+        function reset() {
+            step = 300;
+        }
+    </script>
+</head>
+
+<body>
+
+    <div id="div1">램프 점멸 카운터</div>
+
+    <div id="div2">
+        <br><br><br><br>
+
+        <input type="radio" id="lamp1">
+
+        <br><br><br><br>
+
+        <input type="text" id="txt1">
+
+        <br><br><br><br>
+
+        <button id="btn1" onclick="start();">시작</button>
+        <button id="btn1" onclick="stop();">멈춤</button>
+        <button id="btn1" onclick="reset();">종료</button>
+
+    </div>
+
+    <div id="div3">메카트로닉스과 김지후</div>
+
+</body>
+</html>
